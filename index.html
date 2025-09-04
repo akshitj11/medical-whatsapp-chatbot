@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mediaware</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Roboto', 'Google Sans', sans-serif;
+            background-color: #fef5e9; /* A richer, sun-kissed beige background */
+        }
+
+        #header-title {
+            font-family: 'Google Sans', sans-serif;
+            color: #6d5d4b; /* A richer, warm brown for text */
+        }
+
+        .chat-container {
+            height: calc(100vh - 8rem); /* Adjust height for header and input */
+        }
+        
+        .user-message-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+
+        .bot-message-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            padding: 1rem;
+            border-radius: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .user-message {
+            background-color: #f4dcc7; /* Soft terracotta for user messages */
+            color: #6d5d4b;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+        .bot-message {
+            background-color: #fef5e9; /* Same as body for bot */
+            color: #6d5d4b;
+            border: 1px solid #f2e9d8; /* Softer border to match new background */
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        .input-area-container {
+            background: #fef5e9;
+            border-radius: 1.5rem;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+            padding: 0.5rem 1rem;
+        }
+
+        .button-style {
+             color: #a79a8e; /* Subtly warmer button color */
+        }
+        .button-style:hover {
+            color: #c88a65; /* Warm terracotta on hover for a comforting accent */
+        }
+
+        /* Voice Recording Animation Styles */
+        .recording-animation {
+            animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+        
+        /* Custom Language Panel Animation */
+        #language-panel {
+            transform-origin: top;
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+    <!-- Header & Language Selector -->
+    <header class="p-4 flex justify-between items-center w-full max-w-4xl mx-auto">
+        <h1 id="header-title" class="text-xl font-bold">Healthcare Chatbot</h1>
+        <div class="relative" id="custom-language-selector">
+            <button id="language-selector-button" type="button" class="bg-transparent border border-[#e0d5c4] text-[#6d5d4b] text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 flex items-center justify-between w-full p-2">
+                <span id="selected-language-text">English</span>
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div id="language-panel" class="absolute right-0 mt-2 w-48 bg-[#fef5e9] border border-[#e0d5c4] rounded-lg shadow-lg z-10 hidden transform scale-y-0 opacity-0">
+                <div class="p-1 max-h-60 overflow-y-auto">
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="en">English</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="hi-EN">Hinglish</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="hi">हिन्दी (Hindi)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="bn">বাংলা (Bengali)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="te">తెలుగు (Telugu)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="mr">मराठी (Marathi)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="ta">தமிழ் (Tamil)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="gu">ગુજરાતી (Gujarati)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="kn">ಕನ್ನಡ (Kannada)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="pa">ਪੰਜਾਬੀ (Punjabi)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="ml">മലയാളം (Malayalam)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="or">ଓଡ଼ିଆ (Odia)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="as">অসমীয়া (Assamese)</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-[#6d5d4b] hover:bg-[#f4dcc7] rounded-md" data-lang="ur">اردو (Urdu)</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Chat Area -->
+    <main class="flex-1 flex flex-col items-center w-full overflow-y-auto">
+        <div class="chat-container w-full max-w-4xl p-4">
+            <div id="chat-messages">
+                <div class="bot-message-container">
+                    <div id="initial-bot-message" class="message-bubble bot-message">
+                         Namaskar !  You can tell me about the issues or symptoms you are facing , or anything I can help you with regarding medical awareness.
+                    </div>
+                </div>
+            </div>
+             <p id="header-subtitle" class="text-sm text-gray-500 text-center mt-8">You can talk or type in any language and I will understand you.</p>
+        </div>
+    </main>
+
+    <!-- Fixed Input Bar at Bottom -->
+    <footer class="p-4 w-full">
+        <div class="max-w-4xl mx-auto">
+            <div class="input-area-container flex items-center">
+                <input type="text" id="user-input" placeholder="Message Healthcare Chatbot..." class="flex-1 w-full bg-transparent border-none focus:outline-none text-gray-800 placeholder-gray-500">
+                
+                <button id="mic-btn" class="button-style p-2 rounded-full transition duration-300">
+                     <svg id="mic-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="22"></line></svg>
+                </button>
+                
+                <button id="send-btn" class="button-style p-2 rounded-full transition duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const micBtn = document.getElementById('mic-btn');
+        const micIcon = document.getElementById('mic-icon');
+        const chatContainer = document.querySelector('.chat-container');
+        const headerTitle = document.getElementById('header-title');
+        const headerSubtitle = document.getElementById('header-subtitle');
+        const initialBotMessage = document.getElementById('initial-bot-message');
+        
+        // Custom Language Selector Elements
+        const languageSelectorButton = document.getElementById('language-selector-button');
+        const languagePanel = document.getElementById('language-panel');
+        const selectedLanguageText = document.getElementById('selected-language-text');
+        const languageOptions = languagePanel.querySelectorAll('a');
+
+
+        // UI Translations
+        const translations = {
+            en: {
+                title: 'Healthcare Chatbot',
+                subtitle: 'You can talk or type in any language and I will understand you.',
+                initial: 'Namaskar !  You can tell me about the issues or symptoms you are facing , or anything I can help you with regarding medical awareness.',
+                placeholder: 'Message Healthcare Chatbot...'
+            },
+            'hi-EN': {
+                title: 'Healthcare Chatbot',
+                subtitle: 'Aap kisi bhi language mein baat kar sakte hain aur main samajh jaunga.',
+                initial: 'Namaskar! Aap apni pareshani ya lakshan bata sakte hain.',
+                placeholder: 'Yahan message karein...'
+            },
+            hi: {
+                title: 'स्वास्थ्य सेवा चैटबॉट',
+                subtitle: 'आप किसी भी भाषा में बात कर सकते हैं या टाइप कर सकते हैं और मैं आपको समझूंगा।',
+                initial: 'नमस्ते! आप अपनी समस्याओं या लक्षणों के बारे में बता सकते हैं।',
+                placeholder: 'यहाँ संदेश भेजें...'
+            },
+            bn: {
+                title: 'স্বাস্থ্যসেবা চ্যাটবট',
+                subtitle: 'আপনি যেকোনো ভাষায় কথা বলতে বা টাইপ করতে পারেন এবং আমি আপনাকে বুঝতে পারব।',
+                initial: 'নমস্কার! আপনি আপনার সমস্যা বা লক্ষণ সম্পর্কে আমাকে বলতে পারেন।',
+                placeholder: 'এখানে বার্তা পাঠান...'
+            },
+            te: {
+                title: 'ఆరోగ్య సంరక్షణ చాట్‌బాట్',
+                subtitle: 'మీరు ఏ భాషలోనైనా మాట్లాడవచ్చు లేదా టైప్ చేయవచ్చు మరియు నేను మిమ్మల్ని అర్థం చేసుకుంటాను।',
+                initial: 'నమస్కారం! మీరు ఎదుర్కొంటున్న సమస్యలు లేదా లక్షణాల గురించి మీరు నాకు చెప్పగలరు।',
+                placeholder: 'ఇక్కడ సందేశం పంపండి...'
+            },
+            mr: {
+                title: 'आरोग्यसेवा चॅटबॉट',
+                subtitle: 'तुम्ही कोणत्याही भाषेत बोलू शकता किंवा टाइप करू शकता आणि मी तुम्हाला समजून घेईन।',
+                initial: 'नमस्कार! तुम्ही ज्या समस्या किंवा लक्षणांचा सामना करत आहात त्याबद्दल तुम्ही मला सांगू शकता।',
+                placeholder: 'येथे संदेश पाठवा...'
+            },
+            ta: {
+                title: 'சுகாதார அரட்டைбот',
+                subtitle: 'நீங்கள் எந்த மொழியிலும் பேசலாம் அல்லது தட்டச்சு செய்யலாம், நான் உங்களைப் புரிந்துகொள்வேன்।',
+                initial: 'வணக்கம்! நீங்கள் எதிர்கொள்ளும் பிரச்சினைகள் அல்லது அறிகுறிகளைப் பற்றி என்னிடம் கூறலாம்।',
+                placeholder: 'இங்கே செய்தி அனுப்புங்கள்...'
+            },
+            gu: {
+                title: 'હેલ્થકેર ચેટબોટ',
+                subtitle: 'તમે કોઈપણ ભાષામાં વાત કરી શકો છો અથવા ટાઇપ કરી શકો છો અને હું તમને સમજીશ।',
+                initial: 'નમસ્તે! તમે જે સમસ્યાઓ અથવા લક્ષણોનો સામનો કરી રહ્યા છો તેના વિશે તમે મને કહી શકો છો।',
+                placeholder: 'અહીં સંદેશ મોકલો...'
+            },
+            kn: {
+                title: 'ಆರೋಗ್ಯ ರಕ್ಷಣೆ ಚಾಟ್‌ಬಾಟ್',
+                subtitle: 'ನೀವು ಯಾವುದೇ ಭಾಷೆಯಲ್ಲಿ ಮಾತನಾಡಬಹುದು ಅಥವಾ ಟೈಪ್ ಮಾಡಬಹುದು ಮತ್ತು ನಾನು ನಿಮ್ಮನ್ನು ಅರ್ಥಮಾಡಿಕೊಳ್ಳುತ್ತೇನೆ।',
+                initial: 'ನಮಸ್ಕಾರ! ನೀವು ಎದುರಿಸುತ್ತಿರುವ ಸಮಸ್ಯೆಗಳು ಅಥವಾ ರೋಗಲಕ್ಷಣಗಳ ಬಗ್ಗೆ ನೀವು ನನಗೆ ಹೇಳಬಹುದು।',
+                placeholder: 'ಇಲ್ಲಿ ಸಂದೇಶ ಕಳುಹಿಸಿ...'
+            },
+            pa: {
+                title: 'ਸਿਹਤ ਸੰਭਾਲ ਚੈਟਬੋਟ',
+                subtitle: 'ਤੁਸੀਂ ਕਿਸੇ ਵੀ ਭਾਸ਼ਾ ਵਿੱਚ ਗੱਲ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਟਾਈਪ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਮੈਂ ਤੁਹਾਨੂੰ ਸਮਝਾਂਗਾ।',
+                initial: 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਤੁਸੀਂ ਮੈਨੂੰ ਉਹਨਾਂ ਮੁੱਦਿਆਂ ਜਾਂ ਲੱਛਣਾਂ ਬਾਰੇ ਦੱਸ ਸਕਦੇ ਹੋ ਜਿਨ੍ਹਾਂ ਦਾ ਤੁਸੀਂ ਸਾਹਮਣਾ ਕਰ ਰਹੇ ਹੋ।',
+                placeholder: 'ਇੱਥੇ ਸੁਨੇਹਾ ਭੇਜੋ...'
+            },
+            ml: {
+                title: 'ഹെൽത്ത്‌കെയർ ചാറ്റ്ബോട്ട്',
+                subtitle: 'നിങ്ങൾക്ക് ഏത് ഭാഷയിലും സംസാരിക്കാം അല്ലെങ്കിൽ ടൈപ്പ് ചെയ്യാം, ഞാൻ മനസ്സിലാക്കും.',
+                initial: 'നമസ്കാരം! നിങ്ങൾ നേരിടുന്ന പ്രശ്നങ്ങളെക്കുറിച്ചോ ലക്ഷണങ്ങളെക്കുറിച്ചോ എന്നോട് പറയാം.',
+                placeholder: 'ഇവിടെ സന്ദേശം അയയ്‌ക്കുക...'
+            },
+            or: {
+                title: 'ସ୍ୱାସ୍ଥ୍ୟସେବା ଚାଟ୍‌ବଟ୍',
+                subtitle: 'ଆପଣ ଯେକୌଣସି ଭାଷାରେ କଥାବାର୍ତ୍ତା କରିପାରିବେ କିମ୍ବା ଟାଇପ୍ କରିପାରିବେ ଏବଂ ମୁଁ ଆପଣଙ୍କୁ ବୁଝିପାରିବି।',
+                initial: 'ନମସ୍କାର! ଆପଣ ସାମ୍ନା କରୁଥିବା ସମସ୍ୟା କିମ୍ବା ଲକ୍ଷଣ ବିଷୟରେ ମୋତେ କହିପାରିବେ।',
+                placeholder: 'ଏଠାରେ ସନ୍ଦେଶ ପଠାନ୍ତୁ...'
+            },
+            as: {
+                title: 'স্বাস্থ্যসেৱা চেটবট',
+                subtitle: 'আপুনি যিকোনো ভাষাত কথা পাতিব বা টাইপ কৰিব পাৰে আৰু মই আপোনাক বুজি পাম।',
+                initial: 'নমস্কাৰ! আপুনি সন্মুখীন হোৱা সমস্যা বা লক্ষণসমূহৰ বিষয়ে মোক ক\'ব পাৰে।',
+                placeholder: 'ইয়াত বাৰ্তা পठाওক...'
+            },
+            ur: {
+                title: 'صحت کی دیکھ بھال کا چیٹ بوٹ',
+                subtitle: 'آپ کسی بھی زبان میں بات کر سکتے ہیں یا ٹائپ کر سکتے ہیں اور میں آپ کو سمجھ لوں گا۔',
+                initial: 'نمستے! آپ مجھے ان مسائل یا علامات کے بارے میں بتا سکتے ہیں جن کا آپ سامنا کر رہے ہیں۔',
+                placeholder: 'یہاں پیغام بھیجیں...'
+            }
+        };
+
+        function updateUIText(lang) {
+            const t = translations[lang];
+            if (!t) return;
+            headerTitle.textContent = t.title;
+            headerSubtitle.textContent = t.subtitle;
+            initialBotMessage.textContent = t.initial;
+            userInput.placeholder = t.placeholder;
+        }
+
+
+        // State variables for voice recording
+        let isRecording = false;
+        let mediaRecorder;
+        let audioChunks = [];
+        const WEBHOOK_URL = 'http://localhost:5000/webhook';
+
+        // --- Core Message and UI Functions ---
+        function addMessage(text, sender) {
+            const messageContainer = document.createElement('div');
+            messageContainer.className = `${sender === 'user' ? 'user-message-container' : 'bot-message-container'}`;
+            const messageBubble = document.createElement('div');
+            messageBubble.className = `message-bubble ${sender === 'user' ? 'user-message' : 'bot-message'}`;
+            messageBubble.textContent = text;
+            messageContainer.appendChild(messageBubble);
+            chatMessages.appendChild(messageContainer); // FIX: Append directly to the messages container
+            chatContainer.parentElement.scrollTop = chatContainer.parentElement.scrollHeight; // Scroll main area
+        }
+
+        function showTypingIndicator() {
+            const indicator = document.createElement('div');
+            indicator.id = 'typing-indicator';
+            indicator.className = 'bot-message-container';
+            indicator.innerHTML = `<div class="message-bubble bot-message"><div class="flex items-center space-x-1"><div class="h-2 w-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div><div class="h-2 w-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div><div class="h-2 w-2 bg-gray-400 rounded-full animate-bounce"></div></div></div>`;
+            chatMessages.appendChild(indicator); // FIX: Append directly to the messages container
+            chatContainer.parentElement.scrollTop = chatContainer.parentElement.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
+        }
+        
+        // --- Text-to-Speech Function ---
+        function speakText(text, lang) {
+            try {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang || 'en-US';
+                window.speechSynthesis.speak(utterance);
+            } catch (error) {
+                console.error("Browser Text-to-Speech failed:", error);
+            }
+        }
+
+        // --- Text Message Handling ---
+        async function sendTextMessage() {
+            const userText = userInput.value.trim();
+            if (userText === '') return;
+            
+            // Hide initial message and subtitle if they are visible
+            if(initialBotMessage.parentElement.style.display !== 'none') {
+                initialBotMessage.parentElement.style.display = 'none';
+                headerSubtitle.style.display = 'none';
+            }
+
+            addMessage(userText, 'user');
+            userInput.value = '';
+            showTypingIndicator();
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: userText, sender: 'web-text-user' })
+                });
+
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
+                const data = await response.json();
+                removeTypingIndicator();
+                addMessage(data.response, 'bot');
+                speakText(data.response, data.language);
+
+            } catch (error) {
+                console.error('Error sending message:', error);
+                removeTypingIndicator();
+                let errorText = "Sorry, I couldn't connect. Please ensure the Python webhook server is running.";
+                 if (window.location.protocol === 'https:') {
+                    errorText = "Error: This secure page (HTTPS) cannot connect to the local server (HTTP). Please run this HTML file directly from your computer's folder to fix this.";
+                }
+                addMessage(errorText, 'bot');
+            }
+        }
+
+        // --- Voice Message Handling ---
+        async function handleMicClick() {
+            if (isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                micBtn.classList.remove('recording-animation', 'text-red-600');
+            } else {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' });
+                    audioChunks = [];
+
+                    mediaRecorder.ondataavailable = event => audioChunks.push(event.data);
+                    
+                    mediaRecorder.onstop = async () => {
+                        if(initialBotMessage.parentElement.style.display !== 'none') {
+                           initialBotMessage.parentElement.style.display = 'none';
+                           headerSubtitle.style.display = 'none';
+                        }
+                        
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm;codecs=opus' });
+                        const formData = new FormData();
+                        formData.append('audio', audioBlob, 'recording.webm');
+                        formData.append('sender', 'web-voice-user');
+
+                        showTypingIndicator();
+                        
+                        try {
+                            const response = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
+                            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                            
+                            const data = await response.json();
+                            addMessage(`🎤 "${data.transcribed_text}"`, 'user');
+                            removeTypingIndicator();
+                            addMessage(data.response, 'bot');
+                            speakText(data.response, data.language);
+
+                        } catch(error) {
+                             console.error('Error sending audio:', error);
+                             removeTypingIndicator();
+                             let errorText = "Sorry, error processing voice. Ensure Python server is running.";
+                              if (window.location.protocol === 'https:') {
+                                errorText = "Error: This secure page (HTTPS) cannot send audio to the local server (HTTP). Please run this HTML file directly from your computer to fix this.";
+                             }
+                             addMessage(errorText, 'bot');
+                        } finally {
+                            stream.getTracks().forEach(track => track.stop());
+                        }
+                    };
+
+                    mediaRecorder.start();
+                    isRecording = true;
+                    micBtn.classList.add('recording-animation', 'text-red-600');
+
+                } catch (error) {
+                    console.error("Microphone access denied:", error);
+                    alert("Microphone access is required. Please allow permission and refresh.");
+                }
+            }
+        }
+
+        // --- Event Listeners ---
+        sendBtn.addEventListener('click', sendTextMessage);
+        userInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') sendTextMessage();
+        });
+        micBtn.addEventListener('click', handleMicClick);
+        
+        // --- Custom Language Dropdown Logic ---
+        function toggleLanguagePanel() {
+            if (languagePanel.classList.contains('hidden')) {
+                languagePanel.classList.remove('hidden');
+                setTimeout(() => {
+                    languagePanel.classList.remove('scale-y-0', 'opacity-0');
+                }, 10);
+            } else {
+                languagePanel.classList.add('scale-y-0', 'opacity-0');
+                setTimeout(() => {
+                    languagePanel.classList.add('hidden');
+                }, 200);
+            }
+        }
+
+        languageSelectorButton.addEventListener('click', toggleLanguagePanel);
+
+        languageOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.preventDefault();
+                const lang = option.getAttribute('data-lang');
+                const langText = option.textContent;
+                selectedLanguageText.textContent = langText;
+                updateUIText(lang);
+                toggleLanguagePanel();
+            });
+        });
+
+        // Close dropdown if clicked outside
+        window.addEventListener('click', (e) => {
+            const selector = document.getElementById('custom-language-selector');
+            if (!selector.contains(e.target)) {
+                if (!languagePanel.classList.contains('hidden')) {
+                     languagePanel.classList.add('scale-y-0', 'opacity-0');
+                    setTimeout(() => {
+                        languagePanel.classList.add('hidden');
+                    }, 200);
+                }
+            }
+        });
+
+
+    </script>
+
+</body>
+</html>
+

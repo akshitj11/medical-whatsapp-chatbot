@@ -1,1 +1,0 @@
-# medical-whatsapp-chatbot

@@ -1,0 +1,1 @@
+version: "3.1"intents:greetgoodbyeask_ragresponses:utter_greet:text: "Hello! How can I help you with medical information today?"utter_goodbye:text: "Goodbye! Stay safe."actions:action_query_ragsession_config:session_expiration_time: 60carry_over_slots_to_new_session: true
