@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "organic-poetry-471109-f0",
+  "private_key_id": "5469db7de9c003e134cfd9de4528b4482b43a283",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQD6HI0O4/FcEMLB\nasvQPhZhv8Rin+TiNCSEIzsZHzomx8NdqAVfGXKCQd+uptVBgxOmTR3W/5aXJwdE\n9IYWoNAkGTpLx5w7vFdbqQwqTJZHoZA5LioBZBWPDtqDzzO//4pBUBVg+SjfVZgp\nI3GWwHlakwqEN4U69YglK264TswW3/mjLFGBMl6cxEh9EkiiBIQcFpTc6E6rN3rr\nbkBv1t24kpqJy20PtOECaj/sdE+OXBjlSZPvpLHPRlDc3mVFoi1JqfDIrMxC/HLw\n+Ff9ctWLu6Wi4HdESI/TnzR9uD+YxhMCrjV6IJmLsaEvipjEzQb+IguoWxUNFvqN\nQztAqkMXAgMBAAECggEANbKkjFJfEvOcRLd/m62A06q+6KfIldI5Fs+TlCCytPnF\nlZmJ0bGedp3a/t3dwkt4kAdVhT/pnnkoI+NV2IzdMyrha7ym6+JTZSAFtx0rVKS4\n2LXzGcpZoJXBT3RQeYPNNJmThXbpEg4H9akg7YtUYqBYLSvYZGCrwsMw6cwtICm4\ngRozavPW7A2225ew7MiAwPV5TujinoWJYuVdck/5NgnUpoWqYCiTR1c5kP1Dwx3T\nBjuqbRN/O7Dde0kn+qRum8HAOUe9yaLSiP+ySu1jCNLErJ/v0BU7e0W1dd/r6Kdw\nmQFTrvoGHij+QsE2lKUaubEtUdC0eekPKdoO1xbtZQKBgQD9Dv+4k96T2PLZz4IS\ngGqHFhAzpPn9X5eeCtfJyAExZZg/WiAvFb5DKxEA7OQFYfEBQFgqV3/FrRI7Q/4S\npEHGaTF8kB5/f7IhlC5fbreSja15z3+nuE+6kJyX+jdaRdEqMPkX+tTzop1cyEHS\nglut8uejUhMw6IDe8vh4IHh+ywKBgQD9BMhm8fGlc2XQ3a09ZCN9VDgQHtQiv10E\n9cnUCuvQnwKj4iWwsYGaNofsutRUwWrTc6kt1NdT+2lvdtLRZG2Pi9ozvZB9sram\nxM85RY00O7ECJRz0/Wb6muSv3JDUI2sTVKbY/a+kH8TCrNBAK/FBMfJsI8YI3Zek\n1VGZhbQXZQKBgHlkTotuc6EcuzJ89nqFm5R9ovwDMeC3kHXB4c3r4Zaek7AgPbwY\nhBKYgCmfeaqTVxcwlJqLKsHayhof/atXnC3fnFuSju6+hObSvIQPCoSE7ii2vxfn\ntGdco6HL5+2n/DRvFa7JJopRAYfWkKy4193T3gZcgtQ9VESe7U5C1UqNAoGAN8KV\nE7LgSVEcMCKaajwmYhlsXYkdwSahLlWojBV4ELrqTwmour7zy/OWkwI9hww1KbKE\npzgP2E9A1jK+lSznxEnS5bIyJLF89VXMQVflnYxGHy3kqs0po7L9ERCvzkCb+V+f\ngZSu36GssCZ7opjMi0yhm1lq7EtBfy8P06CWps0CgYA9Lq7NwiiaupfSPG2lyv17\n/oZ9iA+2c5nRouN0tzBv9wK9pWEGVQgVRb8aissW1qcOQRYiiYcxnf/UZt0FvcI5\n64hBa5STnbuPKF/VHQuo821NMrPwdbpjkk9gtD+ROF8uKNN9ZjCmnwWViC9L58Zn\nVpYjFBVOK9pcj9smnIRbpQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "rasa-chatbot-service@organic-poetry-471109-f0.iam.gserviceaccount.com",
+  "client_id": "113462741620643678972",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/rasa-chatbot-service%40organic-poetry-471109-f0.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -1,0 +1,19 @@
+# Python virtual environment
+venv/
+
+# Rasa generated files
+models/
+.rasa/
+
+# RAG Database
+db/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment variables file (should never be committed)
+.env
+
+# VS Code specific folder
+.vscode/

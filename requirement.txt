@@ -1,14 +1,37 @@
+# =================================================================================
+# Definitive and Final Solution Requirements File
+# This version uses the Vertex AI platform and pins all libraries to
+# known compatible versions to resolve all dependency conflicts.
+# =================================================================================
+
 rasa==3.6.14
-langchain==0.1.13
-langchain-google-genai==0.0.9
-chromadb==0.4.24
-pymupdf==1.23.26
-langchain-community==0.0.29
-tqdm==4.66.2
-# Webhook server dependencies
-Flask==3.0.0
-flask-cors==4.0.0
+
+# --- LangChain and Vector Store ---
+langchain==0.0.330
+chromadb==0.4.15
+pymupdf==1.23.8
+
+# --- Google Libraries (Pinned to compatible Vertex AI version) ---
+google-cloud-aiplatform==1.35.0
+google-api-python-client==2.84.0
+google-auth-httplib2==0.1.0
+google-auth-oauthlib==0.8.0
+
+# --- Key Transitive Dependencies (Pinned to prevent all conflicts) ---
+pydantic==1.10.9
+protobuf==4.23.3
+typing-extensions==4.5.0
+packaging==20.9
+
+# --- Web Server and Utilities ---
+tqdm==4.66.1
+google-cloud-translate==3.11.0
+google-cloud-speech==2.20.0
+flask==3.0.0
 requests==2.31.0
-google-cloud-translate==3.11.2
-google-cloud-speech==2.24.0
+python-dotenv==1.0.0
+
+# --- PERMANENT FIX for SQLite issue in Codespaces ---
+pysqlite3-binary==0.5.3
+
 
