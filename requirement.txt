@@ -1,8 +1,4 @@
-# =================================================================================
-# Definitive and Final Solution Requirements File
-# This version uses the Vertex AI platform and pins all libraries to
-# known compatible versions to resolve all dependency conflicts.
-# =================================================================================
+
 
 rasa==3.6.14
 
@@ -33,5 +29,6 @@ python-dotenv==1.0.0
 
 # --- PERMANENT FIX for SQLite issue in Codespaces ---
 pysqlite3-binary==0.5.3
+
 
 
